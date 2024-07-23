@@ -16,10 +16,11 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|confirmed',
+                'password' => 'required|string|min:6|confirmed',
             ]);
 
             if ($validator->fails()) {
+                Log::error($validator->errors());
                 return response()->json(['errors' => $validator->errors()], 422);
             }
 
